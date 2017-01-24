@@ -71,6 +71,7 @@ public class RushHour {
 		//TODO
 		// for each voiture
 		for(int c = 0; c < nbcars; c++) {
+			//~ System.out.println("voiture " + c);
 			// get position & length
 			int i = moveon[c];
 			int j = s.pos[c];
@@ -78,23 +79,29 @@ public class RushHour {
 			
 			if(horiz[c]){
 				// peut-on reculer
-				if(i > 0 && free[j][i-1]) {
+				if(j != 0 && free[i][j-1]) {
 					l.add(new State(s, c, -1));
+					//~ System.out.print("peut reculer ");
 				}
 				// peut-on avancer
-				if(i < (5-clen) &&free[j][i+clen+1]) {
+				if(j < (5-clen) &&free[i][j+clen+1]) {
 					l.add(new State(s, c, 1));
+					//~ System.out.print("peut avancer ");
 				}
+				//~ System.out.println();
 			}
 			else {
 				// peut-on reculer
-				if(j > 0 && free[j-1][i]) {
+				if(j != 0 && free[j-1][i]) {
 					l.add(new State(s, c, -1));
+					//~ System.out.print("peut reculer ");
 				}
 				// peut-on avancer
 				if(j < (5-clen) &&free[j+clen+1][i]) {
 					l.add(new State(s, c, 1));
+					//~ System.out.print("peut avancer ");
 				}
+				//~ System.out.println();
 			}
 		}
 		return l;
