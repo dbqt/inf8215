@@ -115,6 +115,23 @@ public class RushHour {
 		visited.add(s);
 		Queue<State> Q = new LinkedList<State>();
 		//TODO
+		Q.add(s);
+		while(!Q.isEmpty()) {
+			State current = Q.remove();
+			
+			// if done, stop algo
+			if(current.success()){
+				return current;
+			}
+			// visit unvisited children
+			ArrayList<State> children = moves(current);
+			for(State child : children) {
+				if(!visited.contains(child)){
+					Q.add(child);
+					visited.add(child);
+				}
+			}
+		}
 		System.out.println("pas de solution");
 		return null;
 	}
