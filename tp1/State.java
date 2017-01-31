@@ -41,6 +41,7 @@ public class State {
 	public State(State s, int c, int d) {
 		// TODO
 		// garder les infos precedent
+		this.n = s.n + 1;
 		this.prev = s;
 		this.c = c;
 		this.d = d;
@@ -52,6 +53,8 @@ public class State {
 		}
 		// mettre a jour les positions
 		this.pos[c] += d;
+
+		this.f = estimee2();
 	}
 
 
@@ -68,12 +71,33 @@ public class State {
 	 */
 	public int estimee1() {
 		// TODO
-		return 0;
+        // distance red -> sortie
+		return 5 - pos[0];
 	}
 
 	public int estimee2() {
 		// TODO
-		return 0;
+        int nb = 0;
+        //for each voiture
+        for(int voiture = 0; voiture < rh.nbcars; voiture++){
+            if(!rh.horiz[voiture]){ //moves only vertical
+                int i = rh.moveon[voiture];
+
+                if(i < pos[0]) continue; // if behind red car, skip
+
+                int j = pos[voiture];
+                // check every cell taken by the car
+                for(int c = 0; c < rh.len[voiture]; c++) {
+                    // if a cell blocks the red car, increment n then skip this car
+                    if(j+c == 2) {
+                        nb++;
+                        break;
+                    }
+                }
+            }
+        }
+        // distance red -> sortie + nb cars dans le chemin
+		return estimee1() + nb;
 	}
 
 	@Override

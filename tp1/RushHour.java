@@ -116,12 +116,14 @@ public class RushHour {
 		visited.add(s);
 		Queue<State> Q = new LinkedList<State>();
 		//TODO
+        int n = 0;
 		Q.add(s);
 		while(!Q.isEmpty()) {
 			State current = Q.remove();
-			
+			n++;
 			// if done, stop algo
 			if(current.success()){
+                System.out.println("Solution solve en "+n+" verifications");
 				return current;
 			}
 			// visit unvisited children
@@ -142,6 +144,25 @@ public class RushHour {
 		visited.add(s);
 		PriorityQueue<State> Q = new PriorityQueue<State>(10, new MyComparator());
 		//TODO
+        int n = 0;
+		Q.add(s);
+		while(!Q.isEmpty()) {
+			State current = Q.remove();
+            n++;
+			// if done, stop algo
+			if(current.success()){
+                System.out.println("Solution A* en "+n+" verifications");
+				return current;
+			}
+			// visit unvisited children
+			ArrayList<State> children = moves(current);
+			for(State child : children) {
+				if(!visited.contains(child)){
+					Q.add(child);
+					visited.add(child);
+				}
+			}
+		}
 		System.out.println("pas de solution");
 		return null;
 	}
