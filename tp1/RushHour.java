@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
+import java.util.Stack;
 
 public class RushHour {
 
@@ -151,6 +152,25 @@ public class RushHour {
 
 	void printSolution(State s) {
 		// TODO
+		Stack<State> steps = new Stack<State>();
+		int n = 0;
+		for (State st = s; st.prev != null; st = st.prev) {
+			steps.push(st);
+			n++;
+		}
+		System.out.println(n+" movements");
+		while(!steps.empty()) {
+			State curr = steps.pop();
+			String direction;
+			if(horiz[curr.c]){
+				if(curr.d > 0) direction = "la droite";
+				else direction = "la gauche";
+			} else {
+				if(curr.d > 0) direction = "le bas";
+				else direction = "le haut";
+			}
+			System.out.println("voiture "+color[curr.c]+" vers "+direction);
+		}
 	}
 	
 	private class MyComparator implements Comparator<State> {

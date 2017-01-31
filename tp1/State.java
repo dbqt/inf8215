@@ -41,17 +41,17 @@ public class State {
 	public State(State s, int c, int d) {
 		// TODO
 		// garder les infos precedent
-		prev = s;
-		c = c;
-		d = d;
+		this.prev = s;
+		this.c = c;
+		this.d = d;
 		
 		// copier les positions
-		pos = new int[s.pos.length];
+		this.pos = new int[s.pos.length];
 		for(int i = 0; i < s.pos.length; i++) {
-			pos[i] = s.pos[i];
+			this.pos[i] = s.pos[i];
 		}
 		// mettre a jour les positions
-		pos[c] += d;
+		this.pos[c] += d;
 	}
 
 

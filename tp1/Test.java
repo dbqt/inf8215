@@ -5,10 +5,10 @@ public class Test {
 		 //~ test1();
 		 //~ test2();
 		 //~ test3();
-		 test4();
+		 //~ test4();
 		 //~ solve22();
 		 //~ solve1();
-		 //~ solve40();
+		  solve40();
 		 //~ solveAstar();
 	}
 
