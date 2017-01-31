@@ -6,7 +6,7 @@ public class Test {
 		 //~ test2();
 		 //~ test3();
 		 //~ test4();
-		  solve22();
+		 solve22();
 		 //~ solve1();
 		 //~ solve40();
 		 //~ solveAstar();
