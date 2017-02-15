@@ -54,7 +54,8 @@ public class State {
 		// mettre a jour les positions
 		this.pos[c] += d;
 
-		this.f = estimee2();
+		// choisir la fonction d'heuristique
+		this.f = estimee3();
 	}
 
 
@@ -98,6 +99,9 @@ public class State {
         }
         // distance red -> sortie + nb cars dans le chemin
 		return estimee1() + nb;
+	}
+	public int estimee3() {		
+		return n + (estimee2())*64;
 	}
 
 	@Override

@@ -7,8 +7,8 @@ public class Test {
 		 //~ test3();
 		 //~ test4();
 		 solve22();
-		 //~ solve1();
-		 //~ solve40();
+		  solve1();
+		  solve40();
 		 //~ solveAstar();
 	}
 
@@ -113,9 +113,11 @@ public class Test {
 		rh.moveon = new int[] { 2, 2, 0, 0, 3, 1, 1, 3, 0, 4, 5, 5 };
 		State s = new State(new int[] { 1, 0, 3, 1, 1, 4, 3, 4, 4, 2, 4, 1 }, rh);
 		System.out.println("----------Solve normal----------");
-		rh.printSolution(rh.solve(s));
+		rh.solve(s);
+		//rh.printSolution(rh.solve(s));
 		System.out.println("----------Solve A*----------");
-		rh.printSolution(rh.solveAstar(s));
+		rh.solveAstar(s);
+		//rh.printSolution(rh.solveAstar(s));
 		//rh.printSolution(s);
 	}
 
@@ -128,8 +130,12 @@ public class Test {
 		rh.len = new int[] { 2, 2, 3, 2, 3, 2, 3, 3 };
 		rh.moveon = new int[] { 2, 0, 0, 0, 5, 4, 5, 3 };
 		State s = new State(new int[] { 1, 0, 1, 4, 2, 4, 0, 1 }, rh);
-		s = rh.solveAstar(s);
-		rh.printSolution(s);
+		System.out.println("----------Solve normal----------");
+		rh.solve(s);
+		//rh.printSolution(rh.solve(s));
+		System.out.println("----------Solve A*----------");
+		rh.solveAstar(s);
+		//rh.printSolution(s);
 	}
 
 	static void solve40() {
@@ -142,8 +148,12 @@ public class Test {
 		rh.len = new int[] { 2, 3, 2, 2, 2, 2, 3, 3, 2, 2, 2, 2, 2 };
 		rh.moveon = new int[] { 2, 0, 0, 4, 1, 2, 5, 3, 3, 2, 4, 5, 5 };
 		State s = new State(new int[] { 3, 0, 1, 0, 1, 1, 1, 0, 3, 4, 4, 0, 3 }, rh);
-		s = rh.solveAstar(s);
-		rh.printSolution(s);
+		System.out.println("----------Solve normal----------");
+		rh.solve(s);
+		//rh.printSolution(rh.solve(s));
+		System.out.println("----------Solve A*----------");
+		rh.solveAstar(s);
+		//rh.printSolution(s);
 	}
 
 	static void solveAstar() {
@@ -156,6 +166,6 @@ public class Test {
 		rh.moveon = new int[] { 2, 2, 0, 0, 3, 1, 1, 3, 0, 4, 5, 5 };
 		State s = new State(new int[] { 1, 0, 3, 1, 1, 4, 3, 4, 4, 2, 4, 1 }, rh);
 		s = rh.solveAstar(s);
-		rh.printSolution(s);
+		//rh.printSolution(s);
 	}
 }

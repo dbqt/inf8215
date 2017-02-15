@@ -112,6 +112,7 @@ public class RushHour {
 	 * trouve une solution a partir de s
 	 */
 	public State solve(State s) {
+		long startTime = System.nanoTime();
 		HashSet<State> visited = new HashSet<State>();
 		visited.add(s);
 		Queue<State> Q = new LinkedList<State>();
@@ -123,7 +124,10 @@ public class RushHour {
 			n++;
 			// if done, stop algo
 			if(current.success()){
-                System.out.println("Solution solve en "+n+" verifications");
+				long estimatedTime = System.nanoTime() - startTime;
+                System.out.println("Solution solve en "+n+" en "+estimatedTime+" nanoseconds");
+				System.out.println("ratio temps/etats: "+((float)estimatedTime)/n);
+				System.out.println(current.n + " mouvements");
 				return current;
 			}
 			// visit unvisited children
@@ -140,6 +144,7 @@ public class RushHour {
 	}
 
 	public State solveAstar(State s) {
+		long startTime = System.nanoTime();
 		HashSet<State> visited = new HashSet<State>();
 		visited.add(s);
 		PriorityQueue<State> Q = new PriorityQueue<State>(10, new MyComparator());
@@ -151,7 +156,10 @@ public class RushHour {
             n++;
 			// if done, stop algo
 			if(current.success()){
-                System.out.println("Solution A* en "+n+" verifications");
+				long estimatedTime = System.nanoTime() - startTime;
+                System.out.println("Solution A* en "+n+" etats verifies en "+estimatedTime+" nanoseconds");
+				System.out.println("ratio temps/etats: "+((float)estimatedTime)/n);
+				System.out.println(current.n + " mouvements");
 				return current;
 			}
 			// visit unvisited children
