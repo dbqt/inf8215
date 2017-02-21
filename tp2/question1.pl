@@ -50,6 +50,9 @@ format('Gouverne ~w ? ',[Y]),
 
 personne(X) :- sexe(X,Y), categorie(Y). 
     
+long([],N).
+long([_|L],[x|M]):- M is N+1,long(L,M).
+    
 sexe(X, Y) :-
     ask(homme,X),
     homme(Y).
