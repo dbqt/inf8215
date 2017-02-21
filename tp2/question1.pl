@@ -48,14 +48,14 @@ format('Gouverne ~w ? ',[Y]),
 
 /* entry point */
 
-personne(X) :- sexe(X,Y), categorie(Y). 
+personne(X) :- sexe(X,ListeHommes), categorie(ListeHommes, ). 
     
 long([],N).
 long([_|L],[x|M]):- M is N+1,long(L,M).
     
-sexe(X, Y) :-
+sexe(X, ListeHommes) :-
     ask(homme,X),
-    homme(Y).
+    findall(X, homme(X), ListeHommes).
 
 sexe(X, Y) :-
     femme(Y).
