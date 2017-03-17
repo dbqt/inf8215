@@ -130,8 +130,8 @@ objet(X) :-
     ).
 
 /*Message pour dire qu'il y a rien qui fonctionne' */
-personne(X) :-
-    write('Aucune personne ne correspond a ces criteres'), fail.
+objet(X) :-
+    write('Aucun objet ne correspond a ces criteres'), fail.
 
 /*Donnees pour objets */
 chose(aspirateur, electronique, maison_en_general, lourd, menage).
