@@ -1,72 +1,62 @@
-append([],L,L).
-append([X|L1],L2,[X|L3]) :- append(L1,L2,L3).
+/*Include for ins/2*/
+:- use_module(library(clpfd)).
 
-/*everything is valid*/
-valid_seq([], _).
-/*move to next non-zero in sequence, then check if count works from there*/
-valid_seq([C|CONSTRAINTS], SEQ) :-
-    /*move(SEQ, LIST), */
-    countdown(C, SEQ, REMAINSEQ), valid_seq(CONSTRAINTS, REMAINSEQ).
+/*Nothing to check in this sequence*/
+valid_seq([0|Constraints], [0|Seq]) :- 
+    valid_seq(Constraints, Seq).
 
-/*nothing to move*/
-move([], []).
-/*move if current is 0*/
-move([C|SEQ], R) :-
-    C is 0, move(SEQ, R).
-/*stop moving and put back current in sequence*/
-move([C|SEQ], R) :-
-    C is 1, append([C], SEQ, R).
+/*If no more seq, check that there's no more constraint too*/
+valid_seq([0|Constraints], []) :- 
+    Constraints = [].
 
+/*Done checking!*/
+valid_seq([], []).
 
-/*correct end if N is 0 when list is empty*/
-countdown(COUNT, [], []) :- 
-    COUNT is 0.
-/*done counting and end of group*/
-countdown(N, [CURRLIST|REMAINLIST], REMAINLIST) :-  
-    N is 0, CURRLIST is 0,.
-/*decrement if count > 0 and not end of group*/
-countdown(N, [CURRLIST|REMAINLIST], R) :- 
-    N > 0, CURRLIST is 1, NEWCOUNT is N-1, countdown(NEWCOUNT, REMAINLIST, R).
+/*Move forward until a group is found*/
+valid_seq(Constraints, [0|Seq]) :-
+    valid_seq(Constraints, Seq).
 
-/*nothing to check*/
-valid_lines(_, [], _, _).
+/*Count 1s in this group until the group is done -> constraint must be decremented to 0 by then*/
+valid_seq([Constraint|Constraints], [1|Seq]) :- 
+    Constraint > 0, NewConstraint is Constraint-1,
+    valid_seq([NewConstraint|Constraints], Seq).
 
-/*check each line*/
-valid_lines(K, [E|LINESPECS], NMAXLINES, MATRIX) :-
-    extract_l(K, MATRIX, LINE), valid_seq(E, LINE), NK is K+1, valid_lines(NK, LINESPECS, NMAXLINES, MATRIX).
+/*No more lines*/
+valid_lines([], [], _).
 
-/*get kth column*/
-extract_c(K, MATRIX, COLUMN) :-
-    build_column(K, MATRIX, [], COLUMN).
+/*Check that there's the right nb of lines, then validate each line*/
+valid_lines([LineSpec|LinesSpecs], [Line|Lines], NbLines) :- 
+    length(Line, NbLines), Line ins 0..1, valid_seq(LineSpec, Line),
+    valid_lines(LinesSpecs, Lines, NbLines).
 
-/*get kth line*/
-extract_l(K, MATRIX, LINE) :-
-    nth1(K, MATRIX, LINE).
-    
-/* done building column*/
-build_column(_,[], COLUMN, COLUMN).
+/*Done getting column*/
+extract(_, [], []).
 
-/*get nth element from each line and append to column*/
-build_column(K, [LINE|MATRIX], COLUMN, LASTCOLUMN) :-
-    nth1(K, LINE, ELEMENT), append([ELEMENT], COLUMN, NEWCOLUMN), build_column(K, MATRIX, NEWCOLUMN, LASTCOLUMN).
+/*Append k-th element from line to new column*/
+extract(K, [Line|Lines], [E|Column]) :- 
+    nth1(K, Line, E), extract(K, Lines, Column).
 
-/*nothing to check*/
-valid_columns(_, [], _, _).
+/*Start validating columns by counting downward*/
+valid_columns(ColSpecs, Matrix, NbCols) :- 
+    length(Matrix, NbCols), valid_column(ColSpecs, Matrix, NbCols, NbCols).
 
-/*get column K, then valid sequence*/
-valid_columns(K, [E|COLUMNSPECS], NMAXCOLUMN, MATRIX) :-
-    
-    extract_c(K, MATRIX, COLUMN), valid_seq(E, COLUMN), NK is K+1, valid_columns(NK, COLUMNSPECS, NMAXCOLUMN, MATRIX).
+/*No more column!*/
+valid_column(_, _, 0, _).
 
-logicPrb(ColumnSpecs, LineSpecs, X):-
-    list_length(LineSpecs, NMaxLines),
-    list_length(ColumnSpecs, NMaxColumns), !,
-    allLinesColumnsNb(NMaxLines, NMaxColumns, X),
-    extract_c(1, MATRIX, COLUMN), list_limit(NMaxColumns, COLUMN),
-    valid_lines(1, LineSpecs, NMaxLines, X),
-    valid_columns(1, ColumnSpecs, NMaxColumns, X),
+/*Extract k-th column, check that there's the right nb of elements, then validate the column*/
+valid_column(ColSpecs, Matrix, K, NbCols) :- 
+    extract(K, Matrix, Column), length(Column, NbCols), nth1(K, ColSpecs, ColSpec), valid_seq(ColSpec, Column), NewK is K-1, 
+    valid_column(ColSpecs, Matrix, NewK, NbCols).
+
+/*Resolution*/
+logicPrb(ColumnSpecs, LineSpecs, X):- 
+    length(LineSpecs, NbCols),
+    length(ColumnSpecs, NbLines), 
+    valid_lines(LineSpecs, X, NbLines), 
+    valid_columns(ColumnSpecs, X, NbCols), 
     print_nonogram(X).
 
+/*Print*/
 print_nonogram(N) :-
     nl,write('Found nonogram:'),nl,
     print_nonogram1(N).
@@ -88,23 +78,11 @@ print_line([Head | Tail]) :-
     write('. '),
     print_line(Tail).
 
-list_length([], N) :-
-    N is 0.
-
-list_length([E|LIST], COUNT) :-
-    list_length(LIST, N), COUNT is N+1.
-
-list_limit(MAX, LIST) :-
-    list_length(LIST, N), N=<MAX.
-
-allLinesColumnsNb(MAXLINES, MAXCOLS, MATRIX) :-
-    allLines(MATRIX, MAXLINES), allCols(1, MATRIX, MAXCOLS).
-
-allLines([], _).
-allLines([E|MATRIX], M) :-
-    list_limit(M, E), allLines(MATRIX, M).
-
-allCols(_, [], _).
-allCols(K, MATRIX, M) :-
-    extract_c(K, MATRIX, C), list_limit(M, C), NK is K+1, allCols(NK, MATRIX, M).
+/*Tests*/
+test(X) :- logicPrb([[1]],[[1]],X).
+test0(X) :- logicPrb([[1],[1],[1]],[[1],[1,1]],X).
+test1(X) :- logicPrb([[3,1], [1,1,1], [1,1,1], [1,1,1], [1,3]], [[5], [1], [5], [1], [5]], X).
+test2(X) :- logicPrb([[2], [4], [3,1], [4], [2]], [[1,1,1], [5], [3], [1,1], [3]], X).
+/*trop lent...*/
+/*test3(X) :- logicPrb([[1], [5,1], [2,7], [1,4], [2,7], [7], [2,7], [5,1], [1,1,1], [2,1]], [[1,1,1], [1,1,1], [], [7], [2,6], [2,4,1], [8], [7], [1,5,1], [8]], X).*/
 
