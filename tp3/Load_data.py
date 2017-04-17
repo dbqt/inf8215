@@ -7,7 +7,16 @@ def load_data():
     #use np.load to load the data
     dataset = ''
 
-    train_set, valid_set, test_set = (0,0,0)
+    dataX = np.load('dataX.npy')
+    dataY = np.load('dataY.npy')
+    n = len(dataY)
+    dataXY = np.empty([2, n])
+    for i in range(len(dataY)):
+        np.append(dataXY[0], dataX[i])
+        np.append(dataXY[1], dataY[i])
+
+    dataset = [dataXY[:, 0:int(0.7*n)], dataXY[:, int(0.7*n):int(0.85*n)], dataXY[:, int(0.85*n):]]
+    train_set, valid_set, test_set = dataset
 
     print('... loading data')
 

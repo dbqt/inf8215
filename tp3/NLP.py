@@ -5,6 +5,7 @@ import NeuralNet
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 def test_mlp(learning_rate, L2_reg, n_epochs, batch_size, n_hidden1):
     print('START')
     datasets = Load_data.load_data()
@@ -48,7 +49,7 @@ def test_mlp(learning_rate, L2_reg, n_epochs, batch_size, n_hidden1):
     updates = [
         (param, param - learning_rate * T.grad(cost, param))
         for param in NNet.params
-        ]
+    ]
     train_model = theano.function(
         inputs=[index],
         outputs=cost,
@@ -64,7 +65,7 @@ def test_mlp(learning_rate, L2_reg, n_epochs, batch_size, n_hidden1):
     test_score = 0.
     epoch = 0
     done_looping = False
-    err = 1;
+    err = 1
     thr = 0.001
     ndiv = 0
     valErr = []
