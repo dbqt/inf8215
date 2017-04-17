@@ -12,5 +12,5 @@ class HiddenLayer(object):
         b_values = np.zeros((n_out,), dtype=theano.config.floatX)
         self.b = theano.shared(value=b_values, name='bh', borrow=True)
         self.input = input
-        self.output = theano.tensor.nnet.softmax(input)
+        self.output = T.tanh(T.dot(input, self.W) + self.b)
         self.params = [self.W, self.b]

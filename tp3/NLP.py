@@ -19,8 +19,8 @@ def test_mlp(learning_rate, L2_reg, n_epochs, batch_size, n_hidden1):
     n_valid_batches = valid_x.get_value(borrow=True).shape[0] // batch_size
     n_test_batches = test_x.get_value(borrow=True).shape[0] // batch_size
 
-    n_in = 28 * 28
-    n_out = 10
+    n_in = 32 * 32 #28 * 28
+    n_out = 24 #10
 
     index = T.lscalar()
     x = T.matrix('x')

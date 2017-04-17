@@ -1,13 +1,6 @@
 import NLP
-import numpy as np
-import matplotlib
-import matplotlib.pyplot as plt
 
-data = np.load('dataY.npy')
-#print(data)
-
-NLP.test_mlp(0.13, 1, 30, 10, 0)
-
+NLP.test_mlp(learning_rate=0.01, n_epochs=30, n_hidden1=500, batch_size=300, L2_reg=0.0001)
 
 #cmap = matplotlib.cm.Greys
 #for i in data:

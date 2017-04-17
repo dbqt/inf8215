@@ -18,11 +18,11 @@ class LogisticRegression(object):
         )
         #TODO
         #P(Y=i|x,W,b) = softmax_i(W x + b)
-        self.p_y_given_x = T.nnet.softmax(np.exp(T.dot(self.W, input) + self.b))
+        self.p_y_given_x = T.nnet.softmax(T.dot(input, self.W) + self.b)
         #calcul de l'output
         #y_{pred} = argmax_i P(Y=i|x,W,b)
-        self.y_pred = T.argmax(self.p_y_given_x)
-        self.params = [self.W, self.b]
+        self.y_pred = T.argmax(self.p_y_given_x, axis=1)
+        self.params = []
         self.input = input
 
     #calcul de la NLL

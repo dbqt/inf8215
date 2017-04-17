@@ -5,18 +5,19 @@ import theano.tensor as T
 def load_data():
     #TODO : load the data set and so it can be easily used
     #use np.load to load the data
-    dataset = ''
+    #dataset = ''
 
     dataX = np.load('dataX.npy')
     dataY = np.load('dataY.npy')
     n = len(dataY)
-    dataXY = np.empty([2, n])
-    for i in range(len(dataY)):
-        np.append(dataXY[0], dataX[i])
-        np.append(dataXY[1], dataY[i])
 
-    dataset = [dataXY[:, 0:int(0.7*n)], dataXY[:, int(0.7*n):int(0.85*n)], dataXY[:, int(0.85*n):]]
-    train_set, valid_set, test_set = dataset
+    random_perm = np.random.permutation(n)
+    dataX = dataX[random_perm]
+    dataY = dataY[random_perm]
+
+    train_set = (dataX[:int(n*0.7)], dataY[:int(n*0.7)])
+    test_set = (dataX[int(n*0.7):int(n*0.85)], dataY[int(n*0.7):int(n*0.85)])
+    valid_set = (dataX[int(n*0.85):], dataY[int(n*0.85):])
 
     print('... loading data')
 
